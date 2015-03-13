@@ -11,6 +11,10 @@
 <script src="chess.js/chess.min.js"></script>
 <div id="board" style="width: 400px"></div>
 <p>Status: <span id="status"></span></p>
+<p>
+  <button id="goBack">&lt;</button>
+  <button id="goForward">&gt;</button>
+</p>
 <p>FEN: <span id="fen"></span></p>
 <p>PGN: <span id="pgn"></span></p>
 <!-- end example HTML -->
@@ -24,6 +28,7 @@ var init = function() {
 //--- start example JS ---
 var board,
   game = new Chess(),
+  undoStack = [],
   statusEl = $('#status'),
   fenEl = $('#fen'),
   pgnEl = $('#pgn');
@@ -50,12 +55,13 @@ var onDrop = function(source, target) {
   if (move === null) return 'snapback';
 
   updateStatus();
+  undoStack.length = 0;
 };
 
 // update the board position after the piece snap 
 // for castling, en passant, pawn promotion
-var onSnapEnd = function() {
-  board.position(game.fen());
+var updatePosition = function() {
+  board.position(game.fen(), false);
 };
 
 var updateStatus = function() {
@@ -91,12 +97,31 @@ var updateStatus = function() {
   pgnEl.html(game.pgn());
 };
 
+$('#goBack').click(function() {
+  var move = game.undo();
+  if (move !== null) {
+    undoStack.push(move);
+    updatePosition();
+    updateStatus();
+  }
+});
+
+$('#goForward').click(function() {
+  var move;
+  if (undoStack) {
+    move = undoStack.pop();
+    game.move(move);
+    updatePosition();
+    updateStatus();
+  }
+});
+
 var cfg = {
   draggable: true,
   position: 'start',
   onDragStart: onDragStart,
   onDrop: onDrop,
-  onSnapEnd: onSnapEnd,
+  onSnapEnd: updatePosition,
   pieceTheme: 'chessboardjs/img/pieces/{piece}.png'
 };
 board = new ChessBoard('board', cfg);
