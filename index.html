@@ -44,8 +44,9 @@ var onDragStart = function(source, piece, position, orientation) {
 };
 
 var onDrop = function(source, target) {
-  var move, promotion;
+  var branch, move, promotion;
 
+  
   promotion = getPromotion(source, target);
   if (promotion === null) {
     return 'snapback';
@@ -61,6 +62,17 @@ var onDrop = function(source, target) {
   // illegal move
   if (move === null) return 'snapback';
 
+  // Overwrite the rest of the game.
+  if (undoStack.length) {
+    branch = confirm('Playing a move will overwrite the rest of this ' +
+                     'game.\n\nIs that okay?');
+    if (!branch) {
+      game.undo();
+      return 'snapback';
+    }
+  }
+
+  // Everything is okay.
   updateStatus();
   undoStack.length = 0;
 };
@@ -144,7 +156,7 @@ $('#goBack').click(function() {
 
 $('#goForward').click(function() {
   var move;
-  if (undoStack) {
+  if (undoStack.length) {
     move = undoStack.pop();
     game.move(move);
     updatePosition();
