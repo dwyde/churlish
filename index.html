@@ -19,15 +19,20 @@
 </p>
 <p>FEN: <span id="game-fen"></span></p>
 <p>PGN: <span id="game-pgn"></span></p>
+<div>
+  <button id="pgn-save">Save PGN</button>
+</div>
 <form id="pgn-paste">
-    <textarea id="pgn-input"></textarea>
-    <button id="pgn-submit">Paste PGN</button>
+  <textarea id="pgn-input"></textarea>
+  <button id="pgn-submit">Paste PGN</button>
 </form>
 <!-- end HTML -->
 
 <script src="chessboardjs/json3.min.js"></script>
 <script src="chessboardjs/jquery-1.10.1.min.js"></script>
 <script src="chessboardjs/chessboard.js"></script>
+<script src="js-deflate/rawdeflate.js"></script>
+<script src="js-deflate/rawinflate.js"></script>
 <script>
 var init = function() {
 
@@ -128,6 +133,13 @@ var updatePgn = function() {
   pgnEl.html(sanitized.split(/\r?\n/).join('<br>'));
 }
 
+var updateEverything = function() {
+  updateStatus();
+  updatePgn();
+  updatePosition();
+  undoStack.length = 0;
+}
+
 var getPromotion = function(from, to) {
   var i, len, moves, piece;
 
@@ -210,10 +222,9 @@ $('#pgn-paste').submit(function() {
   console.log(pgnText);
   success = game.load_pgn(pgnText);
   if (success) {
-    updateStatus();
-    updatePgn();
-    updatePosition();
-    undoStack.length = 0;
+    updateEverything();
+  } else {
+    console.log('Unable to paste PGN:\n\n' + pgnText);
   }
   return false;
 });
@@ -235,9 +246,26 @@ var cfg = {
   pieceTheme: 'chessboardjs/img/pieces/{piece}.png'
 };
 board = new ChessBoard('board', cfg);
-
 updateStatus();
-//--- end example JS ---
+
+// PGN in the URL
+if (window.location.hash) {
+  var encoded, hash, pgnText;
+  hash = window.location.hash.replace(/^#/, '');
+  encoded = RawDeflate.inflate(atob(hash));
+  pgnText = decodeURIComponent(escape(encoded));
+  success = game.load_pgn(pgnText);
+  if (success) {
+    updateEverything();
+  } else {
+    console.log('Unable to load PGN from URL:\n\n' + pgnText);
+  }
+}
+
+$('#pgn-save').click(function() {
+  var text = unescape(encodeURIComponent(game.pgn()));
+  window.location.hash = btoa(RawDeflate.deflate(text));
+});
 
 }; // end init()
 $(document).ready(init);
