@@ -17,7 +17,6 @@
   <button id="play-forward">&gt;</button>
   <button id="play-fast-forward">&gt;&gt;</button>
 </p>
-<p>FEN: <span id="game-fen"></span></p>
 <p>PGN: <span id="game-pgn"></span></p>
 <div>
   <button id="pgn-save">Save PGN</button>
@@ -41,7 +40,6 @@ var board,
   game = new Chess(),
   undoStack = [],
   statusEl = $('#game-status'),
-  fenEl = $('#game-fen'),
   pgnEl = $('#game-pgn');
 
 // do not pick up pieces if the game is over
@@ -123,7 +121,6 @@ var updateStatus = function() {
   }
 
   statusEl.text(status);
-  fenEl.text(game.fen());
 };
 
 var updatePgn = function() {
