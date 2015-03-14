@@ -1,32 +1,40 @@
 <!doctype html>
 <html>
 <head>
-  <meta charset="utf-8" />
-  <title>js-chess</title>
-  <link rel="stylesheet" href="chessboardjs/chessboard.css" />
+  <meta charset="utf-8">
+  <title>Chess Viewer</title>
+  <link rel="stylesheet" href="chessboardjs/chessboard.css">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
-<!-- start HTML -->
-<script src="chess.js/chess.min.js"></script>
-<div id="board" style="width: 400px"></div>
-<p>Status: <span id="game-status"></span></p>
-<p>
-  <button id="play-rewind">&lt;&lt;</button>
-  <button id="play-back">&lt;</button>
-  <button id="play-forward">&gt;</button>
-  <button id="play-fast-forward">&gt;&gt;</button>
-</p>
-<p>PGN: <span id="game-pgn"></span></p>
-<div>
-  <button id="pgn-save">Save PGN</button>
+<div id="game-wrapper">
+    <div id="board-wrapper">
+        <div id="board"></div>
+        <p id="play-buttons">
+            <button id="play-rewind">&lt;&lt;</button>
+            <button id="play-back">&lt;</button>
+            <button id="play-forward">&gt;</button>
+            <button id="play-fast-forward">&gt;&gt;</button>
+        </p>
+        <p id="game-status"></p>
+    </div>
+    <div id="pgn-actions">
+        <div class="box">
+            <button id="pgn-save">Save PGN</button>
+            <p>Store game data in the URL.</p>
+        </div>
+        <div class="box">
+        <form id="pgn-paste">
+            <button id="pgn-submit">Paste PGN</button>
+            <p><textarea id="pgn-input"></textarea></p>
+        </form>
+        </div>
+    </div>
 </div>
-<form id="pgn-paste">
-  <textarea id="pgn-input"></textarea>
-  <button id="pgn-submit">Paste PGN</button>
-</form>
+<div id="game-pgn"></div>
 <!-- end HTML -->
 
+<script src="chess.js/chess.min.js"></script>
 <script src="chessboardjs/json3.min.js"></script>
 <script src="chessboardjs/jquery-1.10.1.min.js"></script>
 <script src="chessboardjs/chessboard.js"></script>
@@ -125,7 +133,7 @@ var updateStatus = function() {
 
 var updatePgn = function() {
   var pgnText, sanitized;
-  pgnText = game.pgn();
+  pgnText = game.pgn({max_width: 60});
   sanitized = escapeHtml(pgnText);
   pgnEl.html(sanitized.split('\n').join('<br>'));
 }
