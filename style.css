@@ -1,17 +1,17 @@
 body {
     padding: 0;
     margin: 0;
+    width:60em;
 }
 
 #game-wrapper {
-    width: 26em;
     float:left;
-    border-right: 1px solid #ccc;
 }
 
 #board-wrapper {
-    border-bottom: 1px solid #ccc;
-    padding: 1em;
+    padding: 1em 0 1em 1em;
+    float:left;
+    width: 26em;
 }
 
 #game-pgn {
@@ -26,18 +26,6 @@ body {
 
 #pgn-actions {
     padding: 1em 0 1em 1em;
-    margin-top: 1em;
-}
-
-#pgn-actions .box {
-    box-sizing: border-box;
-    width: 50%;
-    float:left;
-    padding-right: 1em;
-}
-
-#pgn-actions .box:last-child {
-    padding-right: 0;
 }
 
 #pgn-actions p {
