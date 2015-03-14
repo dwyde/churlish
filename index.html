@@ -221,7 +221,8 @@ $('#pgn-paste').submit(function() {
 // Utility
 var escapeHtml = function(s) {
   return String(s).replace(/&(?!\w+;)/g, '&amp;').replace(/</g, '&lt;').
-                   replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+                   replace(/>/g, '&gt;').replace(/"/g, '&quot;').
+                   replace(/'/g, '&#x27').replace(/\//g, '&#x2F');
 }
 
 // Initialization
