@@ -12,8 +12,10 @@
 <div id="board" style="width: 400px"></div>
 <p>Status: <span id="status"></span></p>
 <p>
+  <button id="rewind">&lt;&lt;</button>
   <button id="goBack">&lt;</button>
   <button id="goForward">&gt;</button>
+  <button id="fastForward">&gt;&gt;</button>
 </p>
 <p>FEN: <span id="fen"></span></p>
 <p>PGN: <span id="pgn"></span></p>
@@ -148,16 +150,18 @@ var promotionPrompt = function() {
   }
 }
 
-$('#goBack').click(function() {
+// Replay buttons
+var goBack = function() {
   var move = game.undo();
   if (move !== null) {
     undoStack.push(move);
     updatePosition();
     updateStatus();
   }
-});
+  return move;
+};
 
-$('#goForward').click(function() {
+var goForward = function() {
   var move;
   if (undoStack.length) {
     move = undoStack.pop();
@@ -165,6 +169,25 @@ $('#goForward').click(function() {
     updatePosition();
     updateStatus();
   }
+};
+
+$('#rewind').click(function() {
+  var move;
+  do {
+    move = goBack();
+  } while (move !== null);
+});
+
+$('#fastForward').click(function() {
+  do {goForward();} while (undoStack.length);
+});
+
+$('#goBack').click(function() {
+  goBack();
+});
+
+$('#goForward').click(function() {
+  goForward();
 });
 
 var cfg = {
