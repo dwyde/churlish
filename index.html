@@ -7,19 +7,19 @@
 </head>
 <body>
 
-<!-- start example HTML -->
+<!-- start HTML -->
 <script src="chess.js/chess.min.js"></script>
 <div id="board" style="width: 400px"></div>
-<p>Status: <span id="status"></span></p>
+<p>Status: <span id="game-status"></span></p>
 <p>
-  <button id="rewind">&lt;&lt;</button>
-  <button id="goBack">&lt;</button>
-  <button id="goForward">&gt;</button>
-  <button id="fastForward">&gt;&gt;</button>
+  <button id="play-rewind">&lt;&lt;</button>
+  <button id="play-back">&lt;</button>
+  <button id="play-forward">&gt;</button>
+  <button id="play-fast-forward">&gt;&gt;</button>
 </p>
-<p>FEN: <span id="fen"></span></p>
-<p>PGN: <span id="pgn"></span></p>
-<!-- end example HTML -->
+<p>FEN: <span id="game-fen"></span></p>
+<p>PGN: <span id="game-pgn"></span></p>
+<!-- end HTML -->
 
 <script src="chessboardjs/json3.min.js"></script>
 <script src="chessboardjs/jquery-1.10.1.min.js"></script>
@@ -31,9 +31,9 @@ var init = function() {
 var board,
   game = new Chess(),
   undoStack = [],
-  statusEl = $('#status'),
-  fenEl = $('#fen'),
-  pgnEl = $('#pgn');
+  statusEl = $('#game-status'),
+  fenEl = $('#game-fen'),
+  pgnEl = $('#game-pgn');
 
 // do not pick up pieces if the game is over
 // only pick up pieces for the side to move
@@ -171,22 +171,22 @@ var goForward = function() {
   }
 };
 
-$('#rewind').click(function() {
+$('#play-rewind').click(function() {
   var move;
   do {
     move = goBack();
   } while (move !== null);
 });
 
-$('#fastForward').click(function() {
+$('#play-fast-forward').click(function() {
   do {goForward();} while (undoStack.length);
 });
 
-$('#goBack').click(function() {
+$('#play-back').click(function() {
   goBack();
 });
 
-$('#goForward').click(function() {
+$('#play-forward').click(function() {
   goForward();
 });
 
