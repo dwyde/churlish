@@ -46,7 +46,6 @@ var onDragStart = function(source, piece, position, orientation) {
 var onDrop = function(source, target) {
   var branch, move, promotion;
 
-  
   promotion = getPromotion(source, target);
   if (promotion === null) {
     return 'snapback';
@@ -74,6 +73,7 @@ var onDrop = function(source, target) {
 
   // Everything is okay.
   updateStatus();
+  updatePgn();
   undoStack.length = 0;
 };
 
@@ -111,10 +111,13 @@ var updateStatus = function() {
     }
   }
 
-  statusEl.html(status);
-  fenEl.html(game.fen());
-  pgnEl.html(game.pgn());
+  statusEl.text(status);
+  fenEl.text(game.fen());
 };
+
+var updatePgn = function() {
+  pgnEl.text(game.pgn());
+}
 
 var getPromotion = function(from, to) {
   var i, len, moves, piece;
