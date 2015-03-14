@@ -19,6 +19,10 @@
 </p>
 <p>FEN: <span id="game-fen"></span></p>
 <p>PGN: <span id="game-pgn"></span></p>
+<form id="pgn-paste">
+    <textarea id="pgn-input"></textarea>
+    <button id="pgn-submit">Paste PGN</button>
+</form>
 <!-- end HTML -->
 
 <script src="chessboardjs/json3.min.js"></script>
@@ -118,7 +122,10 @@ var updateStatus = function() {
 };
 
 var updatePgn = function() {
-  pgnEl.text(game.pgn());
+  var pgnText, sanitized;
+  pgnText = game.pgn();
+  sanitized = escapeHtml(pgnText);
+  pgnEl.html(sanitized.split(/\r?\n/).join('<br>'));
 }
 
 var getPromotion = function(from, to) {
@@ -190,6 +197,28 @@ $('#play-forward').click(function() {
   goForward();
 });
 
+// PGN paste
+$('#pgn-paste').submit(function() {
+  var pgnText, success;
+  pgnText = $('#pgn-input').val();
+  console.log(pgnText);
+  success = game.load_pgn(pgnText);
+  if (success) {
+    updateStatus();
+    updatePgn();
+    updatePosition();
+    undoStack.length = 0;
+  }
+  return false;
+});
+
+// Utility
+var escapeHtml = function(s) {
+  return String(s).replace(/&(?!\w+;)/g, '&amp;').replace(/</g, '&lt;').
+                   replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+// Initialization
 var cfg = {
   draggable: true,
   position: 'start',
