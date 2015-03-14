@@ -47,3 +47,7 @@ body {
 #pgn-input {
     height:4em;
 }
+
+#action-display div {
+    display: none;
+}

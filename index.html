@@ -18,20 +18,32 @@
         </p>
         <p id="game-status"></p>
     </div>
+
     <div id="pgn-actions">
-        <div class="box">
-            <button id="pgn-save">Save PGN</button>
-            <p>Store game data in the URL.</p>
-        </div>
-        <div class="box">
-        <form id="pgn-paste">
-            <button id="pgn-submit">Paste PGN</button>
-            <p><textarea id="pgn-input"></textarea></p>
-        </form>
+        <select id="action-choices"> 
+            <option value="default" selected disabled>
+            Select an action</option>
+            <option value="url-save">Save to URL</option>
+            <option value="pgn-paste">Paste PGN</option>
+        </select>
+        <div id="action-display">
+            <div id="action-url-save">
+                <p>Store game data in the URL.</p>
+                <button id="pgn-save">Save PGN</button>
+            </div>
+            <div id="action-pgn-paste">
+                <p>Load a PGN game.</p>
+                <form id="pgn-paste">
+                    <button id="pgn-submit">Paste PGN</button>
+                    <p><textarea id="pgn-input"></textarea></p>
+                </form>
+            </div>
         </div>
     </div>
 </div>
-<div id="game-pgn"></div>
+
+<div id="game-pgn">
+</div>
 <!-- end HTML -->
 
 <script src="chess.js/chess.min.js"></script>
@@ -270,6 +282,17 @@ if (window.location.hash) {
 $('#pgn-save').click(function() {
   var text = unescape(encodeURIComponent(game.pgn()));
   window.location.hash = btoa(RawDeflate.deflate(text));
+});
+
+// PGN action select box
+$('#action-choices').change(function() {
+  var value = $(this).val();
+  if (value !== 'default') {
+    $('#action-display div').each(function() {
+      $(this).hide();
+    });
+  $('#action-' + value).toggle();
+  }
 });
 
 }; // end init()
