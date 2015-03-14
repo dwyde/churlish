@@ -127,7 +127,7 @@ var updatePgn = function() {
   var pgnText, sanitized;
   pgnText = game.pgn();
   sanitized = escapeHtml(pgnText);
-  pgnEl.html(sanitized.split(/\r?\n/).join('<br>'));
+  pgnEl.html(sanitized.split('\n').join('<br>'));
 }
 
 var updateEverything = function() {
