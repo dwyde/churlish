@@ -5,9 +5,9 @@ var init = function() {
       statusEl = $('#game-status'),
       pgnEl = $('#game-pgn'),
       pgnHeaders = {
-        White: '#player-white',
-        Black: '#player-black',
-        Event: '#player-event'
+        White: $('#player-white'),
+        Black: $('#player-black'),
+        Event: $('#player-event')
       };
 
   // do not pick up pieces if the game is over
@@ -213,7 +213,7 @@ var init = function() {
   var populatePgnHeaders = function() {
     var key;
     for (key in pgnHeaders) {
-      $(pgnHeaders[key]).val(game.header_get(key) || '');
+      pgnHeaders[key].val(game.header_get(key) || '');
     }
   };
 
@@ -256,7 +256,7 @@ var init = function() {
     game.headers_clear();
 
     for (key in pgnHeaders) {
-      value = $(pgnHeaders[key]).val();
+      value = pgnHeaders[key].val();
       if (value) {
         game.header(key, cleanPgnHeader(value));
       }
