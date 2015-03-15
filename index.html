@@ -294,7 +294,13 @@ if (window.location.hash) {
 }
 
 $('#save-pgn').submit(function() {
-  var text = unescape(encodeURIComponent(game.pgn()));
+  var text;
+
+  game.header('White', $('#player-white').val());
+  game.header('Black', $('#player-black').val());
+  updatePgn();
+
+  text = unescape(encodeURIComponent(game.pgn()));
   window.location.hash = btoa(RawDeflate.deflate(text));
   return false;
 });
