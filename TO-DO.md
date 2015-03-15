@@ -1,5 +1,8 @@
 # Very soon
+- Refactor: split handlers from chess logic; game.PAWN; etc.
 - README
+- Update link on "About" page
+- Upload to GitHub
 
 # Soonish
 - Display the current move number
@@ -10,7 +13,6 @@
 - Minify to deploy
 
 # At some point
-- Code cleanup: one global, game.PAWN, etc.
 - File API: save .PGN of game
 - File API: upload a game?
 - Mobile style
@@ -23,4 +25,3 @@
 - Allow branches in the game
 - FEN support
 - PGN comments?
-- Better encoding?
