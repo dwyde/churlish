@@ -269,7 +269,6 @@ $('#play-forward').click(function() {
 $('#paste-game').submit(function() {
   var pgnText, success;
   pgnText = $('#pgn-input').val();
-  console.log(pgnText);
   success = game.load_pgn(pgnText);
   if (success) {
     updateEverything();
@@ -318,16 +317,20 @@ if (window.location.hash) {
   }
 }
 
+var cleanPgnHeader = function(value) {
+  return value.replace(/\\/g, '\\\\').replace(/"/g, '\\"');
+};
+
 var savePgnHeaders = function() {
   white = $('#player-white').val()
   if (white) {
-      game.header('White', white);
+      game.header('White', cleanPgnHeader(white));
   }
   black = $('#player-black').val()
   if (black) {
-      game.header('Black', black);
+      game.header('Black', cleanPgnHeader(black));
   }
-}
+};
 
 // Fast-forward to the end, then rewind to the displayed position.
 $('#save-pgn').submit(function() {
