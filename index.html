@@ -10,12 +10,11 @@
 
 <div id="pgn-wrapper">
     <div id="pgn-actions">
-        <select id="action-choices"> 
-            <option value="default" selected disabled>Select an action</option>
-            <option value="url-save">Save to URL</option>
-            <option value="pgn-paste">Paste PGN</option>
-            <option value="help">Help</option>
-        </select>
+        <div id="action-choices">
+            <button id="url-save">Save to URL</button> |
+            <button id="pgn-paste">Paste PGN</button> |
+            <button id="help">Help</button>
+        </div>
         <div id="action-display">
             <div id="action-help">
                 <p>This is a simple chess viewer for web browsers.</p>
@@ -34,7 +33,7 @@
             </div>
             <div id="action-pgn-paste">
                 <p>Load a PGN game.</p>
-                <form id="pgn-paste">
+                <form id="paste-game">
                     <p><textarea id="pgn-input"></textarea></p>
                     <button id="pgn-submit">Paste PGN</button>
                 </form>
@@ -247,7 +246,7 @@ $('#play-forward').click(function() {
 });
 
 // PGN paste
-$('#pgn-paste').submit(function() {
+$('#paste-game').submit(function() {
   var pgnText, success;
   pgnText = $('#pgn-input').val();
   console.log(pgnText);
@@ -312,8 +311,8 @@ $('#save-pgn').submit(function() {
 });
 
 // PGN action select box
-$('#action-choices').change(function() {
-  var value = $(this).val();
+$('#action-choices button').click(function() {
+  var value = $(this).attr('id');
   if (value !== 'default') {
     $('#action-display div').each(function() {
       $(this).hide();
