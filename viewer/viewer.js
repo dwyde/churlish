@@ -217,31 +217,6 @@ var init = function() {
     }
   };
 
-  // Initialization
-  var cfg = {
-    draggable: true,
-    position: 'start',
-    onDragStart: onDragStart,
-    onDrop: onDrop,
-    onSnapEnd: updatePosition,
-    pieceTheme: 'chessboardjs/img/pieces/{piece}.png'
-  };
-  board = new ChessBoard('board', cfg);
-  updateStatus();
-
-  // PGN in the URL
-  if (window.location.hash) {
-    var hash, pgnText;
-    hash = window.location.hash.replace(/^#/, '');
-    pgnText = pako.inflateRaw(atob(hash), {to: 'string'});
-    success = game.load_pgn(pgnText);
-    if (success) {
-      updateEverything();
-    } else {
-      console.log('Unable to load PGN from URL:\n\n' + pgnText);
-    }
-  }
-
   var updateUrl = function() {
     window.location.hash = btoa(pako.deflateRaw(game.pgn(), {to: 'string'}));
   }
@@ -310,5 +285,37 @@ var init = function() {
     }
   });
 
+  // Create the board.
+  var initBoard = function() {
+    var cfg = {
+      draggable: true,
+      position: 'start',
+      onDragStart: onDragStart,
+      onDrop: onDrop,
+      onSnapEnd: updatePosition,
+      pieceTheme: 'chessboardjs/img/pieces/{piece}.png'
+    };
+    board = new ChessBoard('board', cfg);
+    updateStatus();
+  };
+
+  // PGN in the URL
+  var initUrl = function() {
+    if (window.location.hash) {
+      var hash, pgnText;
+      hash = window.location.hash.replace(/^#/, '');
+      pgnText = pako.inflateRaw(atob(hash), {to: 'string'});
+      success = game.load_pgn(pgnText);
+      if (success) {
+        updateEverything();
+      } else {
+        console.log('Unable to load PGN from URL:\n\n' + pgnText);
+      }
+    }
+  };
+
+  // Initialize
+  initBoard();
+  initUrl();
 }; // end init()
 $(document).ready(init);
