@@ -318,9 +318,7 @@ if (window.location.hash) {
   }
 }
 
-$('#save-pgn').submit(function() {
-  var black, white, text;
-
+var savePgnHeaders = function() {
   white = $('#player-white').val()
   if (white) {
       game.header('White', white);
@@ -329,10 +327,33 @@ $('#save-pgn').submit(function() {
   if (black) {
       game.header('Black', black);
   }
+}
 
+// Fast-forward to the end, then rewind to the displayed position.
+$('#save-pgn').submit(function() {
+  var black, white, i, text, undoLength;
+
+  // Fast-forward, to avoid saving an incomplete game.
+  undoLength = undoStack.length;
+  if (undoLength) {
+    for (i = 0; i < undoLength; i++) {
+      game.move(undoStack[undoLength - i - 1]);
+    }
+  }
+
+  // Update the URL.
+  savePgnHeaders();
   updatePgn();
   text = unescape(encodeURIComponent(game.pgn()));
   window.location.hash = btoa(RawDeflate.deflate(text));
+
+  // Rewind to the original position on the board.
+  if (undoLength) {
+    for (; i > 0; i--) {
+      game.undo();
+    }
+  }
+
   return false;
 });
 
