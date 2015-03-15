@@ -180,6 +180,7 @@ var updateEverything = function() {
   updatePgn();
   updatePosition();
   undoStack.length = 0;
+  populatePlayerNames();
 }
 
 var getPromotion = function(from, to) {
@@ -292,6 +293,11 @@ var unescapeHtml = function(s) {
            replace(/&#x27;/g, '\'').replace(/&#x2F;/g, '/');
 };
 
+var populatePlayerNames = function() {
+  $('#player-white').val(game.header_get('White') || '');
+  $('#player-black').val(game.header_get('Black') || '');
+};
+
 // Initialization
 var cfg = {
   draggable: true,
@@ -328,11 +334,13 @@ var cleanPgnHeader = function(value) {
 };
 
 var savePgnHeaders = function() {
-  white = $('#player-white').val()
+  game.headers_clear();
+
+  white = $('#player-white').val();
   if (white) {
       game.header('White', cleanPgnHeader(white));
   }
-  black = $('#player-black').val()
+  black = $('#player-black').val();
   if (black) {
       game.header('Black', cleanPgnHeader(black));
   }

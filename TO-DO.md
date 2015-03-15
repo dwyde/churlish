@@ -1,5 +1,4 @@
 # Very soon
-- Remove all other PGN headers when saving to URL
 - README
 
 # Soonish

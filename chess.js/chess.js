@@ -1565,6 +1565,14 @@ var Chess = function(fen) {
       }
 
       return move_history;
+    },
+
+    header_get: function(key) {
+      return header[key];
+    },
+
+    headers_clear: function() {
+      header = {};
     }
 
   };
