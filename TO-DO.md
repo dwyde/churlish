@@ -1,6 +1,4 @@
 # Very soon
-- Break out <select> into links
-- Credits
 - Save full PGN (not current board PGN)
 - Remove all other PGN headers when saving to URL
 - README
@@ -16,6 +14,7 @@
 - Keyboard shortcuts
 - File API: save .PGN of game
 - File API: upload a game?
+- Hide all actions at the top
 - .gitignore
 - Better encoding?
 - Unit tests?

@@ -11,12 +11,13 @@
 <div id="pgn-wrapper">
     <div id="pgn-actions">
         <div id="action-choices">
-            <button id="url-save">Save to URL</button> |
+            <button id="url-save">Save</button> |
             <button id="pgn-paste">Paste PGN</button> |
-            <button id="help">Help</button>
+            <button id="about">About</button> |
+            <button id="credits">Credits</button>
         </div>
         <div id="action-display">
-            <div id="action-help">
+            <div id="action-about">
                 <p>This is a simple chess viewer for web browsers.</p>
                 <p>It stores all game state in the URL, for easy sharing.</p>
                 <p>For more information, please visit <a href="#">FIXME</a>.</p>
@@ -28,7 +29,7 @@
                     <input id="player-white"></p>
                     <p><label for="player-black">Black player:</label>
                     <input id="player-black"></p>
-                    <p><button>Save PGN</button></p>
+                    <p><button>Save to URL</button></p>
                 </form>
             </div>
             <div id="action-pgn-paste">
@@ -37,6 +38,17 @@
                     <p><textarea id="pgn-input"></textarea></p>
                     <button id="pgn-submit">Paste PGN</button>
                 </form>
+            </div>
+            <div id="action-credits">
+                <p> Glued together by <a href="http://davidwyde.com">David Wyde</a>.</p>
+                <p>Building blocks:
+                <a href="https://github.com/jhlywa/chess.js">chess.js</a>,
+                <a href="https://github.com/oakmac/chessboardjs">chessboardjs</a>,
+                and
+                <a href="https://github.com/dankogai/js-deflate">js-deflate</a>.
+                </p>
+                <p>Inspired by a
+                <a href="https://github.com/jbt/markdown-editor">text editor</a>.</p>
             </div>
         </div>
     </div>
