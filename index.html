@@ -29,6 +29,8 @@
                     <input id="player-white"></p>
                     <p><label for="player-black">Black player:</label>
                     <input id="player-black"></p>
+                    <p><label for="player-event">Event:</label>
+                    <input id="player-event"></p>
                     <p><button>Save to URL</button></p>
                 </form>
             </div>
@@ -85,7 +87,12 @@ var board,
   game = new Chess(),
   undoStack = [],
   statusEl = $('#game-status'),
-  pgnEl = $('#game-pgn');
+  pgnEl = $('#game-pgn'),
+  pgnHeaders = {
+    White: '#player-white',
+    Black: '#player-black',
+    Event: '#player-event'
+  };
 
 // do not pick up pieces if the game is over
 // only pick up pieces for the side to move
@@ -180,7 +187,7 @@ var updateEverything = function() {
   updatePgn();
   updatePosition();
   undoStack.length = 0;
-  populatePlayerNames();
+  populatePgnHeaders();
 }
 
 var getPromotion = function(from, to) {
@@ -293,9 +300,11 @@ var unescapeHtml = function(s) {
            replace(/&#x27;/g, '\'').replace(/&#x2F;/g, '/');
 };
 
-var populatePlayerNames = function() {
-  $('#player-white').val(game.header_get('White') || '');
-  $('#player-black').val(game.header_get('Black') || '');
+var populatePgnHeaders = function() {
+  var key;
+  for (key in pgnHeaders) {
+    $(pgnHeaders[key]).val(game.header_get(key) || '');
+  }
 };
 
 // Initialization
@@ -334,15 +343,15 @@ var cleanPgnHeader = function(value) {
 };
 
 var savePgnHeaders = function() {
+  var key, value;
+
   game.headers_clear();
 
-  white = $('#player-white').val();
-  if (white) {
-      game.header('White', cleanPgnHeader(white));
-  }
-  black = $('#player-black').val();
-  if (black) {
-      game.header('Black', cleanPgnHeader(black));
+  for (key in pgnHeaders) {
+    value = $(pgnHeaders[key]).val();
+    if (value) {
+      game.header(key, cleanPgnHeader(value));
+    }
   }
 };
 
