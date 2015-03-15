@@ -272,6 +272,7 @@ $('#paste-game').submit(function() {
   success = game.load_pgn(pgnText);
   if (success) {
     updateEverything();
+    updateUrl();
   } else {
     console.log('Unable to paste PGN:\n\n' + pgnText);
   }
@@ -317,6 +318,11 @@ if (window.location.hash) {
   }
 }
 
+var updateUrl = function() {
+  var text = unescape(encodeURIComponent(game.pgn()));
+  window.location.hash = btoa(RawDeflate.deflate(text));
+}
+
 var cleanPgnHeader = function(value) {
   return value.replace(/\\/g, '\\\\').replace(/"/g, '\\"');
 };
@@ -334,7 +340,7 @@ var savePgnHeaders = function() {
 
 // Fast-forward to the end, then rewind to the displayed position.
 $('#save-pgn').submit(function() {
-  var black, white, i, text, undoLength;
+  var black, white, i, undoLength;
 
   // Fast-forward, to avoid saving an incomplete game.
   undoLength = undoStack.length;
@@ -347,8 +353,7 @@ $('#save-pgn').submit(function() {
   // Update the URL.
   savePgnHeaders();
   updatePgn();
-  text = unescape(encodeURIComponent(game.pgn()));
-  window.location.hash = btoa(RawDeflate.deflate(text));
+  updateUrl();
 
   // Rewind to the original position on the board.
   if (undoLength) {
