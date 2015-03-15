@@ -1,16 +1,17 @@
 # Very soon
-- Event header
-- README
+- LZMA: is it better to b64-encode that?
+- Separate JS from HTML
+- Minify to deploy
 
 # Soonish
+- README
 - Display the current move number
+- Keyboard shortcuts: arrow keys for forward/backward
 - autoplay
 - Jump to a move with a click
 - Jump to a move in the URL?
 
 # At some point
-- Minify to deploy
-- Keyboard shortcuts
 - File API: save .PGN of game
 - File API: upload a game?
 - Mobile style
