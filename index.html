@@ -47,7 +47,7 @@
                 <a href="https://github.com/jhlywa/chess.js">chess.js</a>,
                 <a href="https://github.com/oakmac/chessboardjs">chessboardjs</a>,
                 and
-                <a href="https://github.com/dankogai/js-deflate">js-deflate</a>.
+                <a href="https://github.com/nodeca/pako">pako</a>.
                 </p>
                 <p>Inspired by a
                 <a href="https://github.com/jbt/markdown-editor">text editor</a>.</p>
@@ -77,8 +77,7 @@
 <script src="chessboardjs/json3.min.js"></script>
 <script src="chessboardjs/jquery-1.10.1.min.js"></script>
 <script src="chessboardjs/chessboard.js"></script>
-<script src="js-deflate/rawdeflate.js"></script>
-<script src="js-deflate/rawinflate.js"></script>
+<script src="pako/pako.min.js"></script>
 <script>
 var init = function() {
 
@@ -323,7 +322,7 @@ updateStatus();
 if (window.location.hash) {
   var encoded, hash, pgnText;
   hash = window.location.hash.replace(/^#/, '');
-  encoded = RawDeflate.inflate(atob(hash));
+  encoded = pako.inflateRaw(atob(hash), {to: 'string'});
   pgnText = decodeURIComponent(escape(encoded));
   success = game.load_pgn(pgnText);
   if (success) {
@@ -335,7 +334,7 @@ if (window.location.hash) {
 
 var updateUrl = function() {
   var text = unescape(encodeURIComponent(game.pgn()));
-  window.location.hash = btoa(RawDeflate.deflate(text));
+  window.location.hash = btoa(pako.deflateRaw(text, {to: 'string'}));
 }
 
 var cleanPgnHeader = function(value) {
@@ -355,9 +354,18 @@ var savePgnHeaders = function() {
   }
 };
 
+// Don't save empty games.
+var shouldSave = function() {
+  return game.history().length !== 0;
+}
+
 // Fast-forward to the end, then rewind to the displayed position.
 $('#save-pgn').submit(function() {
   var black, white, i, undoLength;
+
+  if (!shouldSave()) {
+    return false;
+  }
 
   // Fast-forward, to avoid saving an incomplete game.
   undoLength = undoStack.length;
