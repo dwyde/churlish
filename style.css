@@ -41,3 +41,13 @@ body {
 #action-display div {
     display: none;
 }
+
+#action-url-save input{
+    width: 16em;
+}
+
+#action-url-save label {
+    float:left;
+    width: 7em;
+
+}

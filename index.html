@@ -31,7 +31,13 @@
         <div id="action-display">
             <div id="action-url-save">
                 <p>Store game data in the URL.</p>
-                <button id="pgn-save">Save PGN</button>
+                <form>
+                    <p><label for="player-white">White player:</label>
+                    <input id="player-white"></p>
+                    <p><label for="player-black">Black player:</label>
+                    <input id="player-black"></p>
+                    <p><button id="pgn-save">Save PGN</button></p>
+                </form>
             </div>
             <div id="action-pgn-paste">
                 <p>Load a PGN game.</p>
