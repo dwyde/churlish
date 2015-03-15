@@ -237,10 +237,9 @@ var init = function() {
 
   // PGN in the URL
   if (window.location.hash) {
-    var encoded, hash, pgnText;
+    var hash, pgnText;
     hash = window.location.hash.replace(/^#/, '');
-    encoded = pako.inflateRaw(atob(hash), {to: 'string'});
-    pgnText = decodeURIComponent(escape(encoded));
+    pgnText = pako.inflateRaw(atob(hash), {to: 'string'});
     success = game.load_pgn(pgnText);
     if (success) {
       updateEverything();
@@ -250,8 +249,7 @@ var init = function() {
   }
 
   var updateUrl = function() {
-    var text = unescape(encodeURIComponent(game.pgn()));
-    window.location.hash = btoa(pako.deflateRaw(text, {to: 'string'}));
+    window.location.hash = btoa(pako.deflateRaw(game.pgn(), {to: 'string'}));
   }
 
   var cleanPgnHeader = function(value) {
