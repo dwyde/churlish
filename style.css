@@ -1,22 +1,12 @@
 body {
     padding: 0;
     margin: 0;
-    width:60em;
-}
-
-#game-wrapper {
-    float:left;
 }
 
 #board-wrapper {
-    padding: 1em 0 1em 1em;
+    padding: 1em;
     float:left;
     width: 26em;
-}
-
-#game-pgn {
-    float:left;
-    margin: 1em 0 0 1em;
 }
 
 #play-buttons, #game-status {
@@ -24,30 +14,41 @@ body {
     margin:0.5em auto;
 }
 
+#pgn-wrapper {
+    margin-left: 27em;
+}
+
+#pgn-wrapper hr {
+    color:#ccc;
+    background-color:#ccc;
+    height: 2px;
+    border:none;
+    margin-right: 1em;
+}
+
+#game-pgn {
+    margin: 1em;
+}
+
 #pgn-actions {
-    padding: 1em 0 1em 1em;
+    padding: 1em;
 }
 
 #pgn-actions p {
-    margin-top: 0;
+    margin-bottom: 0;
 }
 
 #pgn-input {
     height:4em;
-    width:100%;
-    margin-bottom:-1em;
+    width:23em;
+    margin-bottom:1em;
 }
 
 #action-display div {
     display: none;
 }
 
-#action-url-save input{
-    width: 16em;
-}
-
 #action-url-save label {
     float:left;
     width: 7em;
-
 }

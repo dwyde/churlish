@@ -8,35 +8,39 @@
 </head>
 <body>
 
-<div id="game-wrapper">
+<div id="board-wrapper">
+    <div id="board"></div>
+    <p id="play-buttons">
+        <button id="play-rewind">&lt;&lt;</button>
+        <button id="play-back">&lt;</button>
+        <button id="play-forward">&gt;</button>
+        <button id="play-fast-forward">&gt;&gt;</button>
+    </p>
+    <p id="game-status"></p>
+</div>
 
-    <div id="board-wrapper">
-        <div id="board"></div>
-        <p id="play-buttons">
-            <button id="play-rewind">&lt;&lt;</button>
-            <button id="play-back">&lt;</button>
-            <button id="play-forward">&gt;</button>
-            <button id="play-fast-forward">&gt;&gt;</button>
-        </p>
-        <p id="game-status"></p>
-    </div>
-
+<div id="pgn-wrapper">
     <div id="pgn-actions">
         <select id="action-choices"> 
-            <option value="default" selected disabled>
-            Select an action</option>
+            <option value="default" selected disabled>Select an action</option>
             <option value="url-save">Save to URL</option>
             <option value="pgn-paste">Paste PGN</option>
+            <option value="help">Help</option>
         </select>
         <div id="action-display">
+            <div id="action-help">
+                <p>This is a simple chess viewer for web browsers.</p>
+                <p>It stores all game state in the URL, for easy sharing.</p>
+                <p>For more information, please visit <a href="#">FIXME</a>.</p>
+            </div>
             <div id="action-url-save">
                 <p>Store game data in the URL.</p>
-                <form>
+                <form id="save-pgn">
                     <p><label for="player-white">White player:</label>
                     <input id="player-white"></p>
                     <p><label for="player-black">Black player:</label>
                     <input id="player-black"></p>
-                    <p><button id="pgn-save">Save PGN</button></p>
+                    <p><button>Save PGN</button></p>
                 </form>
             </div>
             <div id="action-pgn-paste">
@@ -48,10 +52,12 @@
             </div>
         </div>
     </div>
+
+    <hr>
+
+    <div id="game-pgn"></div>
 </div>
 
-<div id="game-pgn">
-</div>
 <!-- end HTML -->
 
 <script src="chess.js/chess.min.js"></script>
@@ -287,9 +293,10 @@ if (window.location.hash) {
   }
 }
 
-$('#pgn-save').click(function() {
+$('#save-pgn').submit(function() {
   var text = unescape(encodeURIComponent(game.pgn()));
   window.location.hash = btoa(RawDeflate.deflate(text));
+  return false;
 });
 
 // PGN action select box
