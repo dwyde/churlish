@@ -183,13 +183,21 @@ var updateEverything = function() {
 }
 
 var getPromotion = function(from, to) {
-  var i, len, moves, piece;
+  var move, piece;
 
   piece = game.get(from);
   if (piece.type === 'p') {
     if ((piece.color === 'w' && to.charAt(1) === '8') ||
         (piece.color === 'b' && to.charAt(1) === '1')) {
+      move = game.move({
+        from: from,
+        to: to,
+        promotion: 'q'
+      });
+      if (move !== null) {
+        game.undo();
         return promotionPrompt();
+      }
     }
   }
 

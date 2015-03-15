@@ -1,4 +1,5 @@
 # Very soon
+- Skip promotion dialog if pawn g2-g8
 - Save full PGN (not current board PGN)
 - Remove all other PGN headers when saving to URL
 - README
