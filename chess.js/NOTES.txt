@@ -1,0 +1,3 @@
+This project was taken mostly as-is from https://github.com/jhlywa/chess.js.
+
+David Wyde added a few lines to provide better API access to PGN headers.

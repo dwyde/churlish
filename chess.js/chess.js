@@ -1567,6 +1567,7 @@ var Chess = function(fen) {
       return move_history;
     },
 
+    /** Begin code added by dwyde **/
     header_get: function(key) {
       return header[key];
     },
@@ -1574,7 +1575,7 @@ var Chess = function(fen) {
     headers_clear: function() {
       header = {};
     }
-
+    /** End code added by dwyde **/
   };
 };
 
