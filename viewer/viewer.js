@@ -1,4 +1,4 @@
-var init = function() {
+var ChessViewer = (function() {
   var board,
       game = new Chess(),
       undoStack = [],
@@ -314,8 +314,13 @@ var init = function() {
     }
   };
 
-  // Initialize
-  initBoard();
-  initUrl();
-}; // end init()
-$(document).ready(init);
+  return {
+    // Initialize
+    init: function() {
+      initBoard();
+      initUrl();
+    }
+  }
+}()); // end ChessViewer
+
+$(document).ready(ChessViewer.init);

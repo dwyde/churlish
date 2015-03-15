@@ -1,5 +1,6 @@
 # Very soon
 - Refactor: split handlers from chess logic; game.PAWN; etc.
+- hasOwnProperty on for/in
 - README
 - Update link on "About" page
 - Upload to GitHub
