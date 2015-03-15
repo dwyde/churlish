@@ -1,24 +1,26 @@
 # Very soon
+- Break out <select> into links
+- Credits
 - Save full PGN (not current board PGN)
+- Remove all other PGN headers when saving to URL
 - README
-- Enter PGN headers before save
-- paste PGN on the right?
 
 # Soonish
 - What happens if you paste in multiple PGN games?
-- remove PGN headers if a piece gets moved? maybe?
 - Display the current move number
 - Jump to a move
 - autoplay
-- Better encoding?
 
 # At some point
 - Mobile style
+- Keyboard shortcuts
+- File API: save .PGN of game
 - File API: upload a game?
 - .gitignore
-- Keyboard shortcuts
+- Better encoding?
 - Unit tests?
 - Code cleanup: one global, game.PAWN, etc.
+- Minify
 
 # Probably never
 - Multiple PGN games => database
