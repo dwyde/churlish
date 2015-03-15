@@ -210,12 +210,6 @@ var init = function() {
                      replace(/'/g, '&#x27;').replace(/\//g, '&#x2F;');
   };
 
-  var unescapeHtml = function(s) {
-    return s.replace(/&amp;/g, '&').replace(/&lt;/g, '<').
-             replace(/&gt;/g, '>').replace(/&quot;/g, '"').
-             replace(/&#x27;/g, '\'').replace(/&#x2F;/g, '/');
-  };
-
   var populatePgnHeaders = function() {
     var key;
     for (key in pgnHeaders) {
