@@ -281,10 +281,16 @@ $('#paste-game').submit(function() {
 
 // Utility
 var escapeHtml = function(s) {
-  return String(s).replace(/&(?!\w+;)/g, '&amp;').replace(/</g, '&lt;').
+  return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').
                    replace(/>/g, '&gt;').replace(/"/g, '&quot;').
-                   replace(/'/g, '&#x27').replace(/\//g, '&#x2F');
-}
+                   replace(/'/g, '&#x27;').replace(/\//g, '&#x2F;');
+};
+
+var unescapeHtml = function(s) {
+  return s.replace(/&amp;/g, '&').replace(/&lt;/g, '<').
+           replace(/&gt;/g, '>').replace(/&quot;/g, '"').
+           replace(/&#x27;/g, '\'').replace(/&#x2F;/g, '/');
+};
 
 // Initialization
 var cfg = {
