@@ -294,12 +294,18 @@ if (window.location.hash) {
 }
 
 $('#save-pgn').submit(function() {
-  var text;
+  var black, white, text;
 
-  game.header('White', $('#player-white').val());
-  game.header('Black', $('#player-black').val());
+  white = $('#player-white').val()
+  if (white) {
+      game.header('White', white);
+  }
+  black = $('#player-black').val()
+  if (black) {
+      game.header('Black', black);
+  }
+
   updatePgn();
-
   text = unescape(encodeURIComponent(game.pgn()));
   window.location.hash = btoa(RawDeflate.deflate(text));
   return false;
