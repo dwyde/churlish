@@ -139,8 +139,6 @@ var ChessViewer = (function() {
     }
   }());
 
-
-
   // Replay buttons
   var goBack = function() {
     var move = game.undo();
@@ -165,6 +163,7 @@ var ChessViewer = (function() {
                      replace(/'/g, '&#x27;').replace(/\//g, '&#x2F;');
   };
 
+  // PGN
   var populatePgnHeaders = function() {
     var key;
     for (key in pgnHeaders) {
@@ -202,6 +201,7 @@ var ChessViewer = (function() {
     return game.history().length !== 0;
   }
 
+  // JavaScript event handlers
   $('#play-rewind').click(function() {
     var move;
     do {
