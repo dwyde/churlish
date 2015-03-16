@@ -23,12 +23,8 @@ var ChessViewer = (function() {
   var onDrop = function(source, target) {
     var branch, move, promotion;
 
-    promotion = getPromotion(source, target);
-    if (promotion === null) {
-      return 'snapback';
-    }
-
     // see if the move is legal
+    promotion = getPromotion(source, target);
     move = game.move({
       from: source,
       to: target,
@@ -106,42 +102,42 @@ var ChessViewer = (function() {
     populatePgnHeaders();
   }
 
-  var getPromotion = function(from, to) {
-    var move, piece;
+  var getPromotion = (function() {
+    var promotionPieces = ['q', 'r', 'n', 'b'];
 
-    piece = game.get(from);
-    if (piece.type === 'p') {
-      if ((piece.color === 'w' && to.charAt(1) === '8') ||
-          (piece.color === 'b' && to.charAt(1) === '1')) {
-        move = game.move({
-          from: from,
-          to: to,
-          promotion: 'q'
-        });
-        if (move !== null) {
-          game.undo();
-          return promotionPrompt();
+    var promotionPrompt = function() {
+      var result, piece, text;
+
+      text = 'Enter the letter for your promotion piece: (Q)ueen, (R)ook, ' +
+             '(B)ishop, or k(N)ight';
+      result = prompt(text) || '';
+      piece = result.toLowerCase();
+      return (promotionPieces.indexOf(piece) !== -1) ? piece : null;
+    };
+
+    return function(from, to) {
+      var move,
+          piece = game.get(from);
+
+      if (piece.type === 'p') {
+        if ((piece.color === 'w' && to.charAt(1) === '8') ||
+            (piece.color === 'b' && to.charAt(1) === '1')) {
+          // Check if promotion is legal (with a Queen).
+          move = game.move({from: from, to: to, promotion: 'q'});
+          if (move !== null) {
+            // If promotion is legal, do a takeback and then prompt.
+            game.undo();
+            return promotionPrompt();
+          }
         }
       }
+
+      // No promotion is needed, so default to a Queen.
+      return 'q';
     }
+  }());
 
-    // No promotion needed
-    return 'q';
-  };
 
-  var promotionPrompt = function() {
-    var result, piece, text;
-
-    text = 'Enter the letter for your promotion piece: (Q)ueen, (R)ook, ' +
-           '(B)ishop, or k(N)ight';
-    result = prompt(text) || '';
-    piece = result.toLowerCase();
-    if (['q', 'r', 'n', 'b'].indexOf(piece) !== -1) {
-      return piece;
-    } else {
-      return null;
-    }
-  }
 
   // Replay buttons
   var goBack = function() {
