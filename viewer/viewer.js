@@ -213,7 +213,9 @@ var ChessViewer = (function() {
   var populatePgnHeaders = function() {
     var key;
     for (key in pgnHeaders) {
-      pgnHeaders[key].val(game.header_get(key) || '');
+      if (pgnHeaders.hasOwnProperty(key)) {
+        pgnHeaders[key].val(game.header_get(key) || '');
+      }
     }
   };
 
@@ -231,9 +233,11 @@ var ChessViewer = (function() {
     game.headers_clear();
 
     for (key in pgnHeaders) {
-      value = pgnHeaders[key].val();
-      if (value) {
-        game.header(key, cleanPgnHeader(value));
+      if (pgnHeaders.hasOwnProperty(key)) {
+        value = pgnHeaders[key].val();
+        if (value) {
+          game.header(key, cleanPgnHeader(value));
+        }
       }
     }
   };
