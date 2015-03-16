@@ -160,49 +160,6 @@ var ChessViewer = (function() {
     }
   };
 
-  $('#play-rewind').click(function() {
-    var move;
-    do {
-      move = goBack();
-    } while (move !== null);
-    updatePosition();
-    updateStatus();
-  });
-
-  $('#play-fast-forward').click(function() {
-    do {
-      goForward();
-    } while (undoStack.length);
-    updatePosition();
-    updateStatus();
-  });
-
-  $('#play-back').click(function() {
-    goBack();
-    updatePosition();
-    updateStatus();
-  });
-
-  $('#play-forward').click(function() {
-    goForward();
-    updatePosition();
-    updateStatus();
-  });
-
-  // PGN paste
-  $('#paste-game').submit(function() {
-    var pgnText, success;
-    pgnText = $('#pgn-input').val();
-    success = game.load_pgn(pgnText);
-    if (success) {
-      updateEverything();
-      updateUrl();
-    } else {
-      console.log('Unable to paste PGN:\n\n' + pgnText);
-    }
-    return false;
-  });
-
   // Utility
   var escapeHtml = function(s) {
     return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').
@@ -247,6 +204,48 @@ var ChessViewer = (function() {
     return game.history().length !== 0;
   }
 
+  $('#play-rewind').click(function() {
+    var move;
+    do {
+      move = goBack();
+    } while (move !== null);
+    updatePosition();
+    updateStatus();
+  });
+
+  $('#play-fast-forward').click(function() {
+    do {
+      goForward();
+    } while (undoStack.length);
+    updatePosition();
+    updateStatus();
+  });
+
+  $('#play-back').click(function() {
+    goBack();
+    updatePosition();
+    updateStatus();
+  });
+
+  $('#play-forward').click(function() {
+    goForward();
+    updatePosition();
+    updateStatus();
+  });
+
+  // PGN paste
+  $('#paste-game').submit(function() {
+    var pgnText, success;
+    pgnText = $('#pgn-input').val();
+    success = game.load_pgn(pgnText);
+    if (success) {
+      updateEverything();
+      updateUrl();
+    } else {
+      console.log('Unable to paste PGN:\n\n' + pgnText);
+    }
+    return false;
+  });
   // Fast-forward to the end, then rewind to the displayed position.
   $('#save-pgn').submit(function() {
     var black, white, i, undoLength;
