@@ -32,13 +32,15 @@ var ChessViewer = (function() {
     });
 
     // illegal move
-    if (move === null) return 'snapback';
+    if (move === null) {
+      return 'snapback';
+    }
 
     // Overwrite the rest of the game.
-    if (undoStack.length) {
+    if (undoStack.length !== 0) {
       branch = confirm('Playing a move will overwrite the rest of this ' +
                        'game.\n\nIs that okay?');
-      if (!branch) {
+      if (branch !== true) {
         game.undo();
         return 'snapback';
       }
@@ -150,7 +152,7 @@ var ChessViewer = (function() {
 
   var goForward = function() {
     var move;
-    if (undoStack.length) {
+    if (undoStack.length !== 0) {
       move = undoStack.pop();
       game.move(move);
     }
@@ -188,7 +190,7 @@ var ChessViewer = (function() {
     for (key in pgnHeaders) {
       if (pgnHeaders.hasOwnProperty(key)) {
         value = pgnHeaders[key].val();
-        if (value) {
+        if (value !== '') {
           game.header(key, cleanPgnHeader(value));
         }
       }
@@ -234,7 +236,7 @@ var ChessViewer = (function() {
     var pgnText, success;
     pgnText = $('#pgn-input').val();
     success = game.load_pgn(pgnText);
-    if (success) {
+    if (success === true) {
       updateEverything();
       updateUrl();
     } else {
@@ -247,13 +249,13 @@ var ChessViewer = (function() {
   $('#save-pgn').submit(function() {
     var black, white, i, undoLength;
 
-    if (!shouldSave()) {
+    if (shouldSave() !== true) {
       return false;
     }
 
     // Fast-forward, to avoid saving an incomplete game.
     undoLength = undoStack.length;
-    if (undoLength) {
+    if (undoLength !== 0) {
       for (i = 0; i < undoLength; i++) {
         game.move(undoStack[undoLength - i - 1]);
       }
@@ -265,7 +267,7 @@ var ChessViewer = (function() {
     updateUrl();
 
     // Rewind to the original position on the board.
-    if (undoLength) {
+    if (undoLength !== 0) {
       for (; i > 0; i--) {
         game.undo();
       }
@@ -306,7 +308,7 @@ var ChessViewer = (function() {
       hash = window.location.hash.replace(/^#/, '');
       pgnText = pako.inflateRaw(atob(hash), {to: 'string'});
       success = game.load_pgn(pgnText);
-      if (success) {
+      if (success === true) {
         updateEverything();
       } else {
         console.log('Unable to load PGN from URL:\n\n' + pgnText);
