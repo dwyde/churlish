@@ -246,6 +246,7 @@ var ChessViewer = (function() {
     }
     return false;
   });
+
   // Fast-forward to the end, then rewind to the displayed position.
   $('#save-pgn').submit(function() {
     var black, white, i, undoLength;
