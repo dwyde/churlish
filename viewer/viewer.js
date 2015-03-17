@@ -187,7 +187,6 @@ var ChessViewer = (function() {
     }
   }());
 
-
   // Utility
   var escapeHtml = function(s) {
     return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').
@@ -323,6 +322,7 @@ var ChessViewer = (function() {
       } else {
         console.log('Unable to load PGN from URL:\n\n' + pgnText);
       }
+      Replay.rewind();
     }
   };
 
