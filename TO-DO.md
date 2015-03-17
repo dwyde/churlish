@@ -1,13 +1,12 @@
 # Very soon
-- Organize code
-- README
-- Update link on "About" page
+- Save on each move?
+- Rewind on load from URL?
 - Upload to GitHub
 
 # Soonish
+- Organize code: use a real JS framework?
 - Robust PGN parsing: how do pgn4web, xboard, etc. do it?
 - Keyboard shortcuts: arrow keys for forward/backward
-- Save on each move?
 - autoplay
 - Display the current move number
 - Jump to a move with a click
