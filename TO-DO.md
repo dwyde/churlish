@@ -1,19 +1,18 @@
 # Very soon
-utility
-- Save on each move?
 - Upload to GitHub
+- autoplay
+- Robust PGN parsing: how do pgn4web, xboard, etc. do it?
 
 # Soonish
 - Organize code: use a real JS framework?
-- Robust PGN parsing: how do pgn4web, xboard, etc. do it?
 - Keyboard shortcuts: arrow keys for forward/backward
-- autoplay
 - Display the current move number
 - Jump to a move with a click
 - Jump to a move in the URL?
 - Minify to deploy
 
 # At some point
+- Save on each move?
 - File API: save .PGN of game
 - File API: upload a game?
 - Mobile style
