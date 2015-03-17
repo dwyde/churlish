@@ -1,3 +1,9 @@
+/**
+ * A chess viewer for web browsers.
+ *
+ * This file is based on http://chessboardjs.com/examples#5000.
+ */
+
 var ChessViewer = (function() {
   var board,
       game = new Chess(),
