@@ -104,6 +104,54 @@ var ChessViewer = (function() {
     populatePgnHeaders();
   }
 
+  // Replay buttons
+  var Replay = (function() {
+    var goBack = function() {
+      var move = game.undo();
+      if (move !== null) {
+        undoStack.push(move);
+      }
+      return move;
+    };
+
+    var goForward = function() {
+      var move;
+      if (undoStack.length !== 0) {
+        move = undoStack.pop();
+        game.move(move);
+      }
+    };
+
+    var updateBoard = function() {
+      updatePosition();
+      updateStatus();
+    };
+
+    return {
+      rewind: function() {
+        var move;
+        do {
+          move = goBack();
+        } while (move !== null);
+        updateBoard();
+      },
+      back: function() {
+        goBack();
+        updateBoard();
+      },
+      forward: function() {
+        goForward();
+        updateBoard();
+      },
+      fastForward: function() {
+        do {
+          goForward();
+        } while (undoStack.length !== 0);
+        updateBoard();
+      }
+    };
+  }());
+
   var getPromotion = (function() {
     var promotionPieces = ['q', 'r', 'n', 'b'];
 
@@ -139,22 +187,6 @@ var ChessViewer = (function() {
     }
   }());
 
-  // Replay buttons
-  var goBack = function() {
-    var move = game.undo();
-    if (move !== null) {
-      undoStack.push(move);
-    }
-    return move;
-  };
-
-  var goForward = function() {
-    var move;
-    if (undoStack.length !== 0) {
-      move = undoStack.pop();
-      game.move(move);
-    }
-  };
 
   // Utility
   var escapeHtml = function(s) {
@@ -202,34 +234,12 @@ var ChessViewer = (function() {
   }
 
   // JavaScript event handlers
-  $('#play-rewind').click(function() {
-    var move;
-    do {
-      move = goBack();
-    } while (move !== null);
-    updatePosition();
-    updateStatus();
-  });
 
-  $('#play-fast-forward').click(function() {
-    do {
-      goForward();
-    } while (undoStack.length);
-    updatePosition();
-    updateStatus();
-  });
-
-  $('#play-back').click(function() {
-    goBack();
-    updatePosition();
-    updateStatus();
-  });
-
-  $('#play-forward').click(function() {
-    goForward();
-    updatePosition();
-    updateStatus();
-  });
+  // Move playback
+  $('#play-rewind').click(Replay.rewind);
+  $('#play-back').click(Replay.back);
+  $('#play-forward').click(Replay.forward);
+  $('#play-fast-forward').click(Replay.fastForward);
 
   // PGN paste
   $('#paste-game').submit(function() {
