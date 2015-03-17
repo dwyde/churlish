@@ -229,7 +229,8 @@ var ChessViewer = (function() {
 
   // Don't save empty games.
   var shouldSave = function() {
-    return game.history().length !== 0;
+    return (game.history().length !== 0 ||
+            undoStack.length !== 0);
   }
 
   // JavaScript event handlers
