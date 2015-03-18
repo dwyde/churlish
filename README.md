@@ -8,7 +8,7 @@ Game state is saved in the URL, which allows you to share games without storing 
 game, please try removing comments, sub-variations, and annotations. Sorry!
 
 ## Demo
-[A famous game](http://dwyde.github.io/churlish/#HU3LbsIwELzzFaP0WNWt61eq3tz2gBC05MIBcUhsFxBRgwJB4e87jlbanZ3Z2VHqfbs5HK8JxU89tFh2/flwL3azrW/rcELxOZwSFnXf4hkf3fB3xfzSDXUf883XLZGgsz9euM+kQNJIBq8Cq1+FaKEEoobfa2iikZofqRiBdZ4TYwV80HRYOPKNwjo5lPwRFILFG/W9QWMgX0iOBCE3yTxP8IhVEx0kU7+fWKhiCcnkaiQ9Ncn0Kko+tpAm26KjbZJszizz1tDm8mH58A8=)
+[A famous game](https://dwyde.github.io/churlish/#HU3LbsIwELzzFaP0WNWt61eq3tz2gBC05MIBcUhsFxBRgwJB4e87jlbanZ3Z2VHqfbs5HK8JxU89tFh2/flwL3azrW/rcELxOZwSFnXf4hkf3fB3xfzSDXUf883XLZGgsz9euM+kQNJIBq8Cq1+FaKEEoobfa2iikZofqRiBdZ4TYwV80HRYOPKNwjo5lPwRFILFG/W9QWMgX0iOBCE3yTxP8IhVEx0kU7+fWKhiCcnkaiQ9Ncn0Kko+tpAm26KjbZJszizz1tDm8mH58A8=)
 
 ## Inspirations
 - PGN viewers like [SCID](http://scid.sourceforge.net/)
