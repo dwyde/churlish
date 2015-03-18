@@ -128,32 +128,34 @@ var ChessViewer = (function() {
       }
     };
 
-    var updateBoard = function() {
-      updatePosition();
-      updateStatus();
+    var updateBoard = function(options) {
+      if (options !== undefined && options.updateBoard !== false) {
+        updatePosition();
+        updateStatus();
+      }
     };
 
     return {
-      rewind: function() {
+      rewind: function(options) {
         var move;
         do {
           move = goBack();
         } while (move !== null);
-        updateBoard();
+        updateBoard(options);
       },
-      back: function() {
+      back: function(options) {
         goBack();
-        updateBoard();
+        updateBoard(options);
       },
-      forward: function() {
+      forward: function(options) {
         goForward();
-        updateBoard();
+        updateBoard(options);
       },
-      fastForward: function() {
+      fastForward: function(options) {
         do {
           goForward();
         } while (undoStack.length !== 0);
-        updateBoard();
+        updateBoard(options);
       }
     };
   }());
@@ -211,7 +213,8 @@ var ChessViewer = (function() {
   };
 
   var updateUrl = function() {
-    window.location.hash = btoa(pako.deflateRaw(game.pgn(), {to: 'string'}));
+    var gameData = undoStack.length.toString() + ';' + game.pgn();
+    window.location.hash = btoa(pako.deflateRaw(gameData, {to: 'string'}));
   }
 
   var cleanPgnHeader = function(value) {
@@ -318,18 +321,43 @@ var ChessViewer = (function() {
   };
 
   // PGN in the URL
+  var parseUrl = function(gameText) {
+    var match, matchLen, plyNumber, pgnText;
+
+    match = /^[0-9]{1,5};/.exec(gameText);
+    if (match !== null) {
+      matchLen = match[0].length;
+      plyNumber = parseInt(gameText.slice(0, matchLen - 1));
+      pgnText = gameText.slice(matchLen);
+    } else {
+      plyNumber = 0;
+      pgnText = gameText;
+    }
+    return {ply: plyNumber, pgn: pgnText};
+  }
+
   var initUrl = function() {
+    var hash, gameText, gameData, success;
+
     if (window.location.hash) {
-      var hash, pgnText;
       hash = window.location.hash.replace(/^#/, '');
-      pgnText = pako.inflateRaw(atob(hash), {to: 'string'});
-      success = game.load_pgn(pgnText);
+      gameText = pako.inflateRaw(atob(hash), {to: 'string'});
+      gameData = parseUrl(gameText);
+
+      success = game.load_pgn(gameData.pgn);
       if (success === true) {
         updateEverything();
       } else {
         console.log('Unable to load PGN from URL:\n\n' + pgnText);
       }
-      Replay.rewind();
+
+      if (gameData.ply > 0 && gameData.ply <= game.history().length) {
+        for (var i = 0; i < gameData.ply; i++) {
+          Replay.back({updateBoard: false});
+        }
+        updatePosition();
+        updateStatus();
+      }
     }
   };
 
