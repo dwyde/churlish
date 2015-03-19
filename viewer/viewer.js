@@ -97,7 +97,7 @@ var ChessViewer = (function() {
 
   var updatePgn = function() {
     var pgnText, sanitized;
-    pgnText = game.pgn({max_width: 60});
+    pgnText = game.pgn();
     sanitized = escapeHtml(pgnText);
     pgnEl.html(sanitized.split('\n').join('<br>'));
   }
@@ -251,7 +251,9 @@ var ChessViewer = (function() {
   var savePgnHeaders = function() {
     var key, value;
 
-    game.headers_clear();
+    if ($('#pgn-clear-headers').is(':checked') === true) {
+      game.headers_clear();
+    }
 
     for (key in pgnHeaders) {
       if (pgnHeaders.hasOwnProperty(key)) {
