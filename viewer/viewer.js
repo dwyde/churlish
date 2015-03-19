@@ -404,6 +404,7 @@ var ChessViewer = (function() {
     init: function() {
       initBoard();
       initUrl();
+      $('#action-about').toggle();
     }
   }
 }()); // end ChessViewer
