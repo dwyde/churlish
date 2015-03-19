@@ -102,10 +102,14 @@ var ChessViewer = (function() {
     pgnEl.html(sanitized.split('\n').join('<br>'));
   }
 
-  var updateEverything = function() {
-    updateStatus();
-    updatePgn();
+  var updateBoard = function() {
     updatePosition();
+    updateStatus();
+  };
+
+  var updateEverything = function() {
+    updatePgn();
+    updateBoard();
     undoStack.length = 0;
     populatePgnHeaders();
   }
@@ -121,43 +125,66 @@ var ChessViewer = (function() {
     };
 
     var goForward = function() {
-      var move;
+      var move = null;
       if (undoStack.length !== 0) {
         move = undoStack.pop();
         game.move(move);
       }
-    };
-
-    var updateBoard = function(options) {
-      if (options !== undefined && options.updateBoard !== false) {
-        updatePosition();
-        updateStatus();
-      }
+      return move;
     };
 
     return {
-      rewind: function(options) {
+      rewind: function() {
         var move;
         do {
           move = goBack();
         } while (move !== null);
-        updateBoard(options);
       },
-      back: function(options) {
-        goBack();
-        updateBoard(options);
+      back: function() {
+        var move = goBack();
+        return move;
       },
-      forward: function(options) {
-        goForward();
-        updateBoard(options);
+      forward: function() {
+        var move = goForward();
+        return move;
       },
-      fastForward: function(options) {
+      fastForward: function() {
         do {
           goForward();
         } while (undoStack.length !== 0);
-        updateBoard(options);
       }
     };
+  }());
+
+  var AutoPlay = (function() {
+    var timeoutId = null;
+
+    var startAutoPlay = function() {
+      timeoutId = setInterval(function() {
+        var move = Replay.forward();
+        if (move === null) {
+          stopAutoPlay();
+        } else {
+          updateBoard();
+        }
+      }, 1000);
+    }
+
+    var stopAutoPlay = function() {
+      clearTimeout(timeoutId);
+      timeoutId = null;
+    }
+
+    return {
+      stop: stopAutoPlay,
+      toggle: function() {
+        if (timeoutId === null) {
+          startAutoPlay();
+        } else {
+          stopAutoPlay();
+        }
+      }
+    }
   }());
 
   var getPromotion = (function() {
@@ -245,10 +272,20 @@ var ChessViewer = (function() {
   // JavaScript event handlers
 
   // Move playback
-  $('#play-rewind').click(Replay.rewind);
-  $('#play-back').click(Replay.back);
-  $('#play-forward').click(Replay.forward);
-  $('#play-fast-forward').click(Replay.fastForward);
+  var playBackClick = function(replayFunc) {
+    return function() {
+      AutoPlay.stop();
+      replayFunc();
+      updateBoard();
+    };
+  };
+
+  $('#play-rewind').click(playBackClick(Replay.rewind));
+  $('#play-back').click(playBackClick(Replay.back));
+  $('#play-forward').click(playBackClick(Replay.forward));
+  $('#play-fast-forward').click(playBackClick(Replay.fastForward));
+
+  $('#play-auto').click(AutoPlay.toggle);
 
   // PGN paste
   $('#paste-game').submit(function() {
@@ -353,10 +390,9 @@ var ChessViewer = (function() {
 
       if (gameData.ply > 0 && gameData.ply <= game.history().length) {
         for (var i = 0; i < gameData.ply; i++) {
-          Replay.back({updateBoard: false});
+          Replay.back();
         }
-        updatePosition();
-        updateStatus();
+        updateBoard();
       }
     }
   };
